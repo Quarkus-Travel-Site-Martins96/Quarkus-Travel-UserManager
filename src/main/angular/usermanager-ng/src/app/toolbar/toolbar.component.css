@@ -1,0 +1,37 @@
+.toolbar {
+	height: 40px;
+	background-color: #111;
+	display: flex;
+	justify-content: flex-start;
+	padding: 10px;
+	
+	font-family: luois-sans-bold;
+	font-size: 1.5em;
+}
+
+.toolbar div {
+	margin: auto 20px;
+}
+
+.toolbar div.login,
+.toolbar div.logged {
+	align-self: flex-end;
+	margin-left: auto;
+}
+
+
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+	color: lime;
+	font-style: normal;
+	text-decoration: none;
+}
+
+img {
+	height: 40px;
+	border-radius: 40px;
+	box-shadow: 0 0 5px rgba(255,255,255,0.75);
+}
