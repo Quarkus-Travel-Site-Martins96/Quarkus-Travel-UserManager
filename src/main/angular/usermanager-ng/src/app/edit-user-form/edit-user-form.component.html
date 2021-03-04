@@ -1,0 +1,41 @@
+<div class="user-manager-content">
+	<h1>Edit&nbsp;&nbsp;<i><b>{{ user.username }}</b></i>&nbsp;&nbsp;information:</h1>
+	<div class="content">
+		<div class="form-image">
+			<img [src]="user.avatar" class="usermanager-avatar-image"/>
+		</div>
+		<div class="form-data">
+			<form (ngSubmit)="update()">
+				<div class="usermanager-form">
+					<div class="form-element input-section">
+						<label for="name-input">Name</label>
+						<input type="text" class="usermanager-input-text" 
+								id="name" name="name" [(ngModel)]="name" 
+								[value]="user.name"/>
+						<label for="surname-input">Surname</label>
+						<input type="surname" class="usermanager-input-text" 
+								id="surname" name="surname" [(ngModel)]="surname"
+								[value]="user.surname"/>
+						<label for="country-input">Country</label>
+						<input type="country" class="usermanager-input-text" 
+								id="country" name="country" [(ngModel)]="country"
+								[value]="user.country"/>
+						<label for="birthday-input">Birthdate</label>
+						<input type="birthdate" class="usermanager-input-text" 
+								id="birthdate" name="birthdate" [(ngModel)]="birthdate"
+								[value]="user.birthdate"/>
+						<label for="email-input">Email</label>
+						<input type="email" class="usermanager-input-text" 
+								id="email" name="email" [(ngModel)]="email"
+								[value]="user.email"/>
+					</div>
+					<div class="form-element button-section">
+						<button type="submit" class="usermanager-btn">
+							<span>Edit fields</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

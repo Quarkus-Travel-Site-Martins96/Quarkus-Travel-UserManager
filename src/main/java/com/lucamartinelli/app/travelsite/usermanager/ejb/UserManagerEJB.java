@@ -6,4 +6,6 @@ public interface UserManagerEJB {
 	
 	public UserVO getUserData(String username);
 	
+	public boolean updateUser(UserVO user);
+	
 }

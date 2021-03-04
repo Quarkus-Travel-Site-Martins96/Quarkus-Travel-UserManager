@@ -1,0 +1,32 @@
+.form-image,
+.form-data{
+	display: inline-block;
+	margin: 0 5% 25px 5%;
+	vertical-align: top;
+	width: 300px;
+}
+
+.form-image img {
+	width: 300px;
+}
+
+.user-manager-content {
+	margin: 10px 2%;
+}
+
+.form-element {
+	width: 100%;
+}
+
+.form-element.input-section {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 25px;
+}
+
+.input-section label:first-child {
+	margin-top: 0;
+}
+.input-section label {
+	margin-top: 10px;
+}

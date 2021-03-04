@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+
+@font-face {
+  font-family: luois-sans;
+  src: url('assets/font/Louis George Cafe.ttf');
+}
+
+@font-face {
+  font-family: luois-sans-bold;
+  src: url('assets/font/Louis George Cafe Bold.ttf');
+  font-weight: bold;
+}
+
+@font-face {
+	font-family: luois-sans-italic;
+	src: url('assets/font/Louis George Cafe Italic.ttf');
+	font-style: italic;
+}
+
+@font-face {
+	font-family: luois-sans-bold-italic;
+	src: url('assets/font/Louis George Cafe Bold Italic.ttf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: stanberry-comics;
+	src: url('assets/font/Stanberry.ttf');
+}
+
+html, body {
+  font-family: luois-sans;
+  margin: 0;
+  padding: 0;
+  background-color: #eee;
+}
+
+h1, h2, h3, h4, h5, h6, b {
+	font-family: luois-sans-bold;
+}
+
+i {
+	font-family: luois-sans-italic;
+}

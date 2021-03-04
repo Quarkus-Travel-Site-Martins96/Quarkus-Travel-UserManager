@@ -114,9 +114,35 @@ public class MockUserData {
 		return null;
 	}
 	
-	
-	
-	
-	
+	public static boolean updateUser(final UserVO newUser) {
+		if (newUser == null ||
+				newUser.getUsername() == null ||
+				newUser.getUsername().isEmpty()) {
+			return false;
+		}
+		final UserVO oldUser = getUserData(newUser.getUsername());
+		
+		// Adding missing information (not mandatory) inside the new user structure
+		if (newUser.getName() == null)
+			newUser.setName(oldUser.getName());
+		if (newUser.getSurname() == null)
+			newUser.setSurname(oldUser.getSurname());
+		if (newUser.getEmail() == null)
+			newUser.setEmail(oldUser.getEmail());
+		if (newUser.getBirthdate() == null)
+			newUser.setBirthdate(oldUser.getBirthdate());
+		if (newUser.getAvatar() == null)
+			newUser.setAvatar(oldUser.getAvatar());
+		if (newUser.getCountry() == null)
+			newUser.setCountry(oldUser.getCountry());
+		
+		// Overwriting not editable fields
+		newUser.setGroups(oldUser.getGroups());
+		
+		USERS_DATA.remove(oldUser);
+		USERS_DATA.add(newUser);
+		
+		return true;
+	}
 	
 }

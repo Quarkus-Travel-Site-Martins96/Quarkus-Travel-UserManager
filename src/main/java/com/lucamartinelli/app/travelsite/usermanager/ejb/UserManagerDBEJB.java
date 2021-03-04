@@ -32,5 +32,17 @@ public class UserManagerDBEJB implements UserManagerEJB {
 		}
 		return user;
 	}
+	
+	@Override
+	public boolean updateUser(UserVO user) {
+		final UserManagerDAO dao = CDI.current()
+				.select(UserManagerDAO.class, new Default.Literal()).get();
+		try {
+			return dao.updateUser(user);
+		} catch (SQLException e) {
+			log.error("Error durig contact database: ", e);
+			throw new RuntimeException(e);
+		}
+	}
 
 }
