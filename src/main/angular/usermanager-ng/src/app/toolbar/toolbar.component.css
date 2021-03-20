@@ -1,37 +1,46 @@
-.toolbar {
-	height: 40px;
-	background-color: #111;
+nav {
 	display: flex;
+	flex-wrap: nowrap;
 	justify-content: flex-start;
-	padding: 10px;
-	
-	font-family: luois-sans-bold;
 	font-size: 1.5em;
+	text-shadow: 0 0 2px black;
 }
 
-.toolbar div {
-	margin: auto 20px;
+nav div {
+	margin: 5px 10px;
+	align-self: center;
 }
 
-.toolbar div.login,
-.toolbar div.logged {
-	align-self: flex-end;
+nav div:last-child {
 	margin-left: auto;
 }
 
+.u-clearfix:after, .u-clearfix:before {
+	content: '';
+	display: table;
+}
 
-a,
-a:link,
-a:visited,
-a:hover,
-a:active {
-	color: lime;
-	font-style: normal;
-	text-decoration: none;
+.u-clearfix:after {
+	clear: both;
+}
+
+header {
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 100;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	transition: top 0.3s;
 }
 
 img {
-	height: 40px;
+	height: auto;
+	max-height: 50px;
 	border-radius: 40px;
-	box-shadow: 0 0 5px rgba(255,255,255,0.75);
+	box-shadow: 0 0 5px rgba(255, 255, 255, 0.75);
+}
+
+a {
+	text-decoration: none;
+	color: rgba(255, 255, 255, 0.8);
 }

@@ -100,8 +100,14 @@ public class UserVO implements Serializable {
 
 	@Override
 	public String toString() {
+		String base64 = this.avatar;
+		
+		if (base64 != null && base64.length() > 60)
+			base64 = new String(base64.substring(0,50) + "..." + base64.substring(base64.length()-51));
+		
+		
 		return "UserVO [username=" + username + ", email=" + email + ", groups=" + groups + ", birthdate=" + birthdate
-				+ ", name=" + name + ", surname=" + surname + ", country=" + country + ", avatar=" + avatar + "]";
+				+ ", name=" + name + ", surname=" + surname + ", country=" + country + ", avatar=" + base64 + "]";
 	}
 
 	@Override

@@ -1,9 +1,12 @@
-<div class="toolbar">
-	<div class="logo"><a [href]="homeUrl"><span>LOGO</span></a></div>
-	<div class="offer"><a href="/"><span>OFFERS</span></a></div>
-	
-	<div *ngIf="!cookieJWT" class="login"><a [href]="loginUrl"><span>LOGIN</span></a></div>
-	<div *ngIf="cookieJWT" class="logged"><a [href]="userManagementUrl">
-		<img [src]="jwt.avatar" [alt]="jwt.name" />
-	</a></div>
-</div>
+<header class="u-clearfix header" id="navbar">
+	<div class="container">
+		<nav>
+			<div class="logo"><a [href]="homeUrl"><span>LOGO</span></a></div>
+			
+			<div *ngIf="!cookieJWT" class="login"><a [href]="loginUrl"><span>LOGIN</span></a></div>
+			<div *ngIf="cookieJWT" class="logged"><a [href]="userManagementUrl">
+				<img [src]="jwt.avatar" [alt]="jwt.name" />
+			</a></div>
+		</nav>
+	</div>
+</header>

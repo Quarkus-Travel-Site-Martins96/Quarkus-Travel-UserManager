@@ -6,6 +6,8 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { EditUserFormComponent } from './edit-user-form/edit-user-form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
 	declarations: [
@@ -16,7 +18,9 @@ import { FormsModule } from '@angular/forms';
 	imports: [
 		BrowserModule,
 		HttpClientModule,
-		FormsModule
+		FormsModule,
+		BrowserAnimationsModule,
+		MaterialModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

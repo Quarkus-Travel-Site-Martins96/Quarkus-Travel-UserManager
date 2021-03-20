@@ -1,8 +1,11 @@
 package com.lucamartinelli.app.travelsite.usermanager;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -17,14 +20,19 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
+import org.jboss.logging.MDC;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import com.lucamartinelli.app.travelsite.usermanager.ejb.UserManagerDBEJB;
 import com.lucamartinelli.app.travelsite.usermanager.ejb.UserManagerEJB;
 import com.lucamartinelli.app.travelsite.usermanager.ejb.UserManagerInMemoryEJB;
+import com.lucamartinelli.app.travelsite.usermanager.utils.FileToBase64;
 import com.lucamartinelli.app.travelsite.usermanager.utils.ValidateInput;
+import com.lucamartinelli.app.travelsite.usermanager.vo.MultipartBody;
 import com.lucamartinelli.app.travelsite.usermanager.vo.UserVO;
 
 
@@ -54,6 +62,9 @@ public class UserManager {
 	
 	@PostConstruct
 	public void init() {
+		if (jwt != null)
+			MDC.put("username", jwt.getClaim("upn"));
+		
 		log.debug("UserManager service is loaded with mode [" + mode + "]");
 		if (ejb == null) {
 			switch (mode) {
@@ -70,6 +81,11 @@ public class UserManager {
 						+ " the value for key [usermanager.mode]");
 			}
 		}
+	}
+	
+	@PreDestroy
+	public void onDestroy() {
+		MDC.clear();
 	}
 	
 
@@ -103,7 +119,7 @@ public class UserManager {
     	final String validateError = ValidateInput.validateForUpdate(user);
     	if (validateError != null) {
     		log.error("Error in input validation " + validateError);
-    		setError(401, "Request is not valid: " + validateError);
+    		setError(400, "Request is not valid: " + validateError);
     		return null;
     	}
     	
@@ -120,6 +136,72 @@ public class UserManager {
         	setError(500, "Internal server error");
         	return null;
 		}
+    	return Response.ok().build();
+    }
+    
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Path("/update-image")
+    public Response uploadAvatar(@MultipartForm MultipartBody data) {
+    	
+    	File file = null;
+    	try {
+    		file = Files.createTempFile("avatar", "-"+System.currentTimeMillis()).toFile();
+        	FileUtils.copyInputStreamToFile(data.file, file);
+		} catch (IOException e) {
+			log.error("Error during create temp file ", e);
+			return Response.serverError().entity(e).build();
+		}
+    	
+		if (file == null || !file.exists() || file.length() == 0) {
+			log.error("File not exists");
+			setError(400, "Wrong input");
+			return null;
+		}
+		
+		log.debug("###### FILE INFO ######");
+    	log.debug("Tmp name: " + file.getName());
+    	log.debug("Total space: " + (file.length() / 1024) + " KB");
+    	log.debug("#######################");
+		
+		if (!ValidateInput.checkAvatarSize(file)) {
+			log.warn("Size is too high");
+			setError(400, "Image size is too high");
+			return null;
+		}
+		final String prefix = FileToBase64.getPrefix(data.fileType);
+		if (prefix == null) {
+			log.warn("File type " + data.fileType + " not supported");
+			setError(400, "Image format [" + data.fileType + "] not supported");
+    		return null;
+		}
+			
+		final String base64 = FileToBase64.encode(file, prefix);
+		final UserVO user = new UserVO();
+		user.setUsername(jwt.getClaim("upn"));
+		user.setAvatar(base64);
+		
+		if (ejb == null) {
+    		log.error("Error in configuration USERMANAGER EJB!");
+    		setError(503, "Service Unavailable. Wrong Configurations");
+    		return null;
+    	}
+		
+		log.debug("Final base64 size --> " + base64.length() + " characters");
+		log.debug("BASE64:\n " + base64.substring(0,50) + "..." + base64.substring(base64.length()-51));
+		
+		if (!ejb.updateUser(user)) {
+			log.error("Error during update user: " + user.getUsername());
+			return Response.serverError().build();
+		}
+		
+		if (file.delete()) {
+			log.debug("Temp file was deleted");
+		} else {
+			log.error("Cannot delete temp file");
+		}
+		
+		log.debug("Update Avatar completed");
     	return Response.ok().build();
     }
     

@@ -1,5 +1,8 @@
 package com.lucamartinelli.app.travelsite.usermanager.utils;
 
+import java.io.File;
+
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.jboss.logging.Logger;
 
 import com.lucamartinelli.app.travelsite.usermanager.vo.UserVO;
@@ -33,6 +36,26 @@ public class ValidateInput {
 		}
 		
 		return null;
+	}
+	
+	public static boolean checkAvatarSize(final File f) {
+		final long size = f.length() / 1024;
+		long max;
+		try {
+			max = Long.parseLong(ConfigProvider.getConfig()
+					.getOptionalValue("usernamanger.avatar.size.max.kb", String.class)
+					.orElse("150"));
+		} catch (NumberFormatException e) {
+			log.warn("Wrong configuration for property 'usernamanger.avatar.size.max.kb', please set a number");
+			log.warn("Using default value 150 KB");
+			max = 150L;
+		}
+		log.debug("Input file size: " + size);
+		log.debug("max size allowed: " + max);
+		if (size > max)
+			return false;
+		return true;
+		
 	}
 	
 	

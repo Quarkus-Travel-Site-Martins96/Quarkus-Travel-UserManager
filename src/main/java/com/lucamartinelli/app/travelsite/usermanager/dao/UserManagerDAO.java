@@ -89,7 +89,7 @@ public class UserManagerDAO {
 	
 	public UserVO getUserInfo(final String username) throws SQLException {
 			UserVO user = null;
-			log.debug(USER_DATA_QUERY + " --> using [username=" + username + "]");
+			log.debug(USER_DATA_QUERY.replaceFirst("\\?", username));
 			
 			try (Connection connection = datasource.getConnection();
 					PreparedStatement ps = connection.prepareStatement(USER_DATA_QUERY)) {

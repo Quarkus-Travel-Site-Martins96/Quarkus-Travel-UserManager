@@ -23,7 +23,9 @@ export class RestServiceAuthorized {
 		return this.rest.sendPostWithString(url, body, headers);
 	}
 
-	sendPost<T>(url: string, body: any, headers: HttpHeaders): Observable<HttpResponse<T>> {
+	sendPost<T>(url: string, body: any, headers?: HttpHeaders): Observable<HttpResponse<T>> {
+		if (!headers)
+			headers = new HttpHeaders();
 		headers = this.createAuthorizationHeader(headers);
 		return this.rest.sendPost<T>(url, body, headers);
 	}

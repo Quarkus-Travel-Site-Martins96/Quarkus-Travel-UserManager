@@ -2,31 +2,31 @@
 
 @font-face {
   font-family: luois-sans;
-  src: url('assets/font/Louis George Cafe.ttf');
+  src: url("assets/font/Louis George Cafe.ttf");
 }
 
 @font-face {
   font-family: luois-sans-bold;
-  src: url('assets/font/Louis George Cafe Bold.ttf');
+  src: url("assets/font/Louis George Cafe Bold.ttf");
   font-weight: bold;
 }
 
 @font-face {
 	font-family: luois-sans-italic;
-	src: url('assets/font/Louis George Cafe Italic.ttf');
+	src: url("assets/font/Louis George Cafe Italic.ttf");
 	font-style: italic;
 }
 
 @font-face {
 	font-family: luois-sans-bold-italic;
-	src: url('assets/font/Louis George Cafe Bold Italic.ttf');
+	src: url("assets/font/Louis George Cafe Bold Italic.ttf");
 	font-style: italic;
 	font-weight: bold;
 }
 
 @font-face {
 	font-family: stanberry-comics;
-	src: url('assets/font/Stanberry.ttf');
+	src: url("assets/font/Stanberry.ttf");
 }
 
 html, body {
@@ -36,10 +36,21 @@ html, body {
   background-color: #eee;
 }
 
+body {margin-top: 80px; height: calc(100% - 80px);}
+html {height: 100%}
+
 h1, h2, h3, h4, h5, h6, b {
 	font-family: luois-sans-bold;
 }
 
-i {
-	font-family: luois-sans-italic;
-}
+i {font-family: luois-sans-italic;}
+
+.flex{display:flex;}
+.block{display:block;}
+.full{width: 100%;}
+.half{width: 50%;}
+.quarter{width: 25%;}
+.center{justify-content: center;}
+.text-center{text-align: center;}
+.vertical-center{align-self:center;}
+body { font-family: luois-sans, sans-serif; }
