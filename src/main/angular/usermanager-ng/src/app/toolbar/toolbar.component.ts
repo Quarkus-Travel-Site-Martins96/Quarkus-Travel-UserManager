@@ -34,7 +34,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 			this.sub.unsubscribe();
 
 		if (this.cookieJWT) {
-
+			
 			//JWT found, check if is valid
 			this.sub = this.rest.sendPost<JWT>(validateUrl, this.cookieJWT, new HttpHeaders({
 				'content-type': 'text/plain'
@@ -46,8 +46,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 					//JWT non correct or service not available
 					if (error.status === 401) {
 						console.error('The token JWT is not valid, relogin required', error)
-						this.cookieMng.deleteCookie('user.jwt');
-						this.jwt = null;
+						this.logout();
 					} else {
 						console.error('The call is not end correct', error)
 						this.jwt = null;
@@ -67,6 +66,11 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 			}
 			prevScrollpos = currentScrollPos;
 		}
+	}
+	
+	logout(): void {
+		this.cookieMng.deleteCookie('user.jwt');
+		window.top.location.href = this.homeUrl;
 	}
 
 }

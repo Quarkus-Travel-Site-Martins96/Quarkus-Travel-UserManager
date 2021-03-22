@@ -21,6 +21,9 @@ const getUserDataUrl: string = host + '/usermanager';
 	]
 })
 export class EditUserFormComponent implements OnInit {
+	
+	errorBE: boolean = false;
+	errorBEMsg: string;
 
 	maxDate = maxDate;
 	birthdateDate: Date;
@@ -52,6 +55,8 @@ export class EditUserFormComponent implements OnInit {
 					this.birthdateDate = new Date(this.user.birthdate);
 			}, err => {
 				console.error(err);
+				this.errorBE = true;
+				this.errorBEMsg = this.getError(err.error);
 			})
 	}
 
@@ -88,6 +93,8 @@ export class EditUserFormComponent implements OnInit {
 			document.getElementById("user-update-button-span").innerHTML="Done!";
 		}, err => {
 			console.error("Update failed")
+			this.errorBE = true;
+			this.errorBEMsg = this.getError(err.error);
 		});
 
 	}

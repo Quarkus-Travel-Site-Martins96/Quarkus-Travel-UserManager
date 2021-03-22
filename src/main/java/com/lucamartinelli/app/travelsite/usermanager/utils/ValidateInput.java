@@ -29,9 +29,9 @@ public class ValidateInput {
 		final String birthdate = user.getBirthdate();
 		if (birthdate != null) {
 			if (birthdate.length() != 10 ||
-					!birthdate.matches("\\d{2}-\\d{2}-\\d{4}")) {
-				log.warn("Birthdate is not correct, expected format \"dd-mm-yyyy\"");
-				return "Birthdate is not correct, expected format \"dd-mm-yyyy\"";
+					!birthdate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+				log.warn("Birthdate is not correct, expected format \"yyyy-mm-dd\"");
+				return "Birthdate is not correct, expected format \"yyyy-mm-dd\"";
 			}
 		}
 		
@@ -56,6 +56,32 @@ public class ValidateInput {
 			return false;
 		return true;
 		
+	}
+
+	/**
+	 * Read the input structure and check if one or more fields are valued
+	 * for the update, if the structure not contains any new data the flow can
+	 * skip the update
+	 * 
+	 * @param user - Input structure
+	 * @return <code>true</code> if the structure contains fields for update,
+	 *  <code>false</code> if the structure have no new field/s
+	 */
+	public static boolean updateIsNecessary(UserVO user) {
+		if (user.getAvatar() != null && !user.getAvatar().isEmpty())
+			return true;
+		if (user.getBirthdate() != null && !user.getBirthdate().isEmpty())
+			return true;
+		if (user.getCountry() != null && !user.getCountry().isEmpty())
+			return true;
+		if (user.getEmail() != null && !user.getEmail().isEmpty())
+			return true;
+		if (user.getName() != null && !user.getName().isEmpty())
+			return true;
+		if (user.getSurname() != null && !user.getSurname().isEmpty())
+			return true;
+		
+		return false;
 	}
 	
 	

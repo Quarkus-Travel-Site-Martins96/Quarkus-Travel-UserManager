@@ -44,3 +44,35 @@ a {
 	text-decoration: none;
 	color: rgba(255, 255, 255, 0.8);
 }
+
+.user-mngmnt {
+	padding: 10px 20px;
+	background-color: rgba(200,200,200,0.8);
+	border: 1px solid #fff;
+	border-radius: 10px;
+	
+	position: absolute;
+	right: 10px;
+   	top  : 50px;
+	opacity: 0;
+	transition: linear 0.5s;
+	
+	display: block;
+	font-variant: small-caps;
+}
+
+.user-mngmnt a {
+	margin: 5px 0;
+	color: black;
+	font-size: 0.6em;
+	float: left;
+    clear: left;
+}
+
+.logged:hover .user-mngmnt,
+.logged:active .user-mngmnt,
+.logged:focus .user-mngmnt {
+	opacity: 1;
+	top  : 70px;
+}
+

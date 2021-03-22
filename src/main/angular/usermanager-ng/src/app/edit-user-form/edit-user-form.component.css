@@ -163,3 +163,19 @@ button:hover span {
 }
 
 
+.courtesy-page {
+	color: red;
+	display: flex;
+	justify-content: space-around;
+	min-height: 250px;
+	width: 100%;
+    background: #ddd;
+}
+
+.err-msg {
+	text-align: center;
+	font-size: 1em;
+	font-weight: bold;
+	margin: auto;
+}
+

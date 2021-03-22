@@ -1,6 +1,6 @@
 <div class="user-manager-content">
 	<h1>Edit&nbsp; <i><b>{{ user.username }}</b></i>&nbsp; information:</h1>
-	<div class="container">
+	<div class="container" *ngIf="!errorBE">
 		<div class="content">
 			<div class="form-image">
 				<img [src]="user.avatar" class="usermanager-avatar-image"/>
@@ -63,6 +63,12 @@
 					</div>
 				</form>
 			</div>
+		</div>
+	</div>
+	<div class="courtesy-page" *ngIf="errorBE">
+		<div class="err-msg">
+			<h1>Error on server</h1>
+			<span>{{ errorBEMsg }}</span>
 		</div>
 	</div>
 </div>

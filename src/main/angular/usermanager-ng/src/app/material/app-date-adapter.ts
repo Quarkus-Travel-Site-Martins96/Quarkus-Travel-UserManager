@@ -12,11 +12,11 @@ export class AppDateAdapter extends NativeDateAdapter {
 export const APP_DATE_FORMATS: MatDateFormats = {
 	parse: {
 		dateInput: {
-			dateInput: 'DD-MM-YYYY'
+			dateInput: 'YYYY-MM-DD'
 		},
 	},
 	display: {
-		dateInput: 'DD-MM-YYYY',
+		dateInput: 'YYYY-MM-DD',
 		monthYearLabel: { year: 'numeric', month: 'numeric' },
 		dateA11yLabel: {
 			year: 'numeric', 
@@ -35,6 +35,6 @@ export class DateUtils {
 		let month: string = (date.getMonth() + 1).toString();
 		month = +month < 10 ? '0' + month : month;
 		let year = date.getFullYear();
-		return `${day}-${month}-${year}`;
+		return `${year}-${month}-${day}`;
 	}
 }
