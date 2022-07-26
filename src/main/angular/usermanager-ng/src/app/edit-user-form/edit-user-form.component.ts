@@ -1,15 +1,11 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { Subscription } from 'rxjs';
-import { host } from 'src/environments/environment';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
+import { Environment } from 'src/environments/environment';
 import { AppDateAdapter, maxDate, APP_DATE_FORMATS, DateUtils } from '../material/app-date-adapter';
 import { RestServiceAuthorized } from '../rest-service-authorized';
 import { UserVO } from '../vo/user-inteface-vo';
-
-const avatarManagerUrl: string = host + '/usermanager/update-image';
-const userManagerUrl: string = host + '/usermanager/update';
-const getUserDataUrl: string = host + '/usermanager';
 
 @Component({
 	selector: 'app-edit-user-form',
@@ -21,6 +17,12 @@ const getUserDataUrl: string = host + '/usermanager';
 	]
 })
 export class EditUserFormComponent implements OnInit {
+
+	private hostUM: string;
+	private hostHome: string;
+	private avatarManagerUrl: string;
+	private userManagerUrl: string;
+	private getUserDataUrl: string;	
 	
 	errorBE: boolean = false;
 	errorBEMsg: string;
@@ -29,7 +31,6 @@ export class EditUserFormComponent implements OnInit {
 	birthdateDate: Date;
 	user: UserVO = new UserVO();
 
-	private userDataSub: Subscription;
 	private modifyUserSub: Subscription;
 	private changeAvatarSub: Subscription;
 
@@ -40,21 +41,31 @@ export class EditUserFormComponent implements OnInit {
 	email: string;
 	avatar: File | null;
 
-	constructor(private rest: RestServiceAuthorized) { }
+	constructor(private rest: RestServiceAuthorized) {
+		this.hostUM = Environment.getUserManagerHost();
+		this.hostHome = Environment.getHomeHost();
+		this.avatarManagerUrl = this.hostUM + '/usermanager/update-image';
+		this.userManagerUrl = this.hostUM + '/usermanager/update';
+		this.getUserDataUrl = this.hostUM + '/usermanager';
+	}
 
 	ngOnInit(): void {
-		if (this.userDataSub)
-			this.userDataSub.unsubscribe();
 
-		this.userDataSub = this.rest.sendGet<UserVO>(getUserDataUrl, new HttpHeaders({
+		const obsv: Observable<HttpResponse<UserVO>> = this.rest.sendGet<UserVO>(this.getUserDataUrl, new HttpHeaders({
 				Accept: 'application/json'
-			}))
-			.subscribe(resp => {
+			}));
+
+		firstValueFrom(obsv)
+			.then(resp => {
 				this.user = resp.body;
 				if (this.user && this.user.birthdate)
 					this.birthdateDate = new Date(this.user.birthdate);
 			}, err => {
 				console.error(err);
+				if (err.status === 401 || err.status === 403) {
+					console.log("Unauthorized access, login is required");
+					location.href = this.hostHome;
+				}
 				this.errorBE = true;
 				this.errorBEMsg = this.getError(err.error);
 			})
@@ -85,7 +96,7 @@ export class EditUserFormComponent implements OnInit {
 		if (this.modifyUserSub)
 			this.modifyUserSub.unsubscribe();
 
-		this.modifyUserSub = this.rest.sendPost<any>(userManagerUrl, userRequest, new HttpHeaders({
+		this.modifyUserSub = this.rest.sendPost<any>(this.userManagerUrl, userRequest, new HttpHeaders({
 			'Content-Type': 'application/json'
 		})).subscribe(() => {
 			console.log("Update completed");
@@ -122,7 +133,7 @@ export class EditUserFormComponent implements OnInit {
 		form.append('avatar', this.avatar);
 		form.append('image-type', this.avatar.type);
 
-		this.changeAvatarSub = this.rest.sendPost<any>(avatarManagerUrl, form).subscribe(() => {
+		this.changeAvatarSub = this.rest.sendPost<any>(this.avatarManagerUrl, form).subscribe(() => {
 			location.reload();
 		}, err => {
 			console.error(err);

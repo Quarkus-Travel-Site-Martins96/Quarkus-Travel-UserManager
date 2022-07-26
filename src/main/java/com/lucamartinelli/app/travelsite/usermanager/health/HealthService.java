@@ -25,7 +25,7 @@ public class HealthService implements HealthCheck {
 				.name("usermanager-service-check")
 				.withData("usermanager.mode", mode)
 				.withData("date", date)
-				.state(configuredDone)
+				.status(configuredDone)
 				.build();
 	}
 
